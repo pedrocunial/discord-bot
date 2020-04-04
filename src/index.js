@@ -12,6 +12,16 @@ const init = () => {
   const client = new Discord.Client();
   let handler;
 
+  const startServices = ({ discordToken, googleToken }) => {
+    client.login(discordToken);
+    handler = makeHandler(
+      new MusicHandler(
+        new SongQueue(new YoutubeService(googleToken)),
+        messageFormatter,
+      ),
+    );
+  };
+
   client.once('ready', () => {
     console.log('Logged');
   });
@@ -24,21 +34,21 @@ const init = () => {
     handler?.(content.slice(1), msg);
   });
 
-  fs.readFile('secrets/secrets.json', 'utf8', (err, data) => {
-    if (err) throw err;
+  if (process.env.DISCORD_TOKEN && process.env.GOOGLE_API_TOKEN) {
+    startServices({
+      discordToken: process.env.DISCORD_TOKEN,
+      googleToken: process.env.GOOGLE_API_TOKEN,
+    });
+  } else {
+    fs.readFile('secrets/secrets.json', 'utf8', (err, data) => {
+      if (err) throw err;
 
-    const credentials = JSON.parse(data);
-    console.log(credentials);
-
-    client.login(credentials.token);
-
-    handler = makeHandler(
-      new MusicHandler(
-        new SongQueue(new YoutubeService(credentials.googleApiKey)),
-        messageFormatter,
-      ),
-    );
-  });
+      const { token: discordToken, googleApiKey: googleToken } = JSON.parse(
+        data,
+      );
+      startServices({ discordToken, googleToken });
+    });
+  }
 };
 
 init();
