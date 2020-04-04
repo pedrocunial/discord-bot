@@ -46,6 +46,7 @@ const init = () => {
       const { token: discordToken, googleApiKey: googleToken } = JSON.parse(
         data,
       );
+      console.log({ discordToken, googleToken });
       startServices({ discordToken, googleToken });
     });
   }

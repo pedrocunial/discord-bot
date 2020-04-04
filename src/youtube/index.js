@@ -22,7 +22,16 @@ export class YoutubeService {
     };
 
     youtubeSearch(searchQuery, options, async (err, data) => {
-      if (err) throw err;
+      if (err) {
+        console.log('====');
+        console.error('[YoutubeService] youtubeSearch failed ');
+        console.log(err.response.data.error);
+        console.log('====');
+        onFailure(
+          err?.response?.data?.error?.message ?? 'acabo a brincadera ;-;',
+        );
+        return;
+      }
 
       console.log(data);
       const url = data?.[0]?.link;
