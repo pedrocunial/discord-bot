@@ -66,10 +66,9 @@ export class SongQueue {
     (!this.songQueue.connection || this.songQueue.songs.length === 1) &&
     voiceChannel;
 
-  pushSong = async (song, message) => {
+  resolveSearch = async (songObj, message) => {
     const prevState = { ...this.songQueue };
     const { songs: prevSongs } = this.songQueue;
-    const songObj = await this.musicBackend.getSong(song);
     const songs = [...prevSongs, songObj];
     const voiceChannel = message.member?.voice?.channel;
     this.songQueue = {
@@ -97,6 +96,23 @@ export class SongQueue {
     return this;
   };
 
+  pushSong = async (song, message) => {
+    console.log(song);
+    await this.musicBackend.resolveSong(
+      song,
+      (result) => {
+        this.resolveSearch(result, message);
+      },
+      (error) => {
+        console.error('[SongQueue] on search failed', error);
+        sendMessage(
+          message,
+          `nao consegui achar uma canção com as palavras ${song.join(' ')}`,
+        );
+      },
+    );
+  };
+
   clearState = () => {
     this.songQueue.songs = [];
     this.songQueue.connection?.dispatcher?.end?.();
@@ -108,8 +124,12 @@ export class SongQueue {
       sendMessage(message, 'nem to tocando po');
     }
 
+    sendMessage(message, 'limpano a fila');
     this.clearState();
   };
+
+  getQueue = () =>
+    this.songQueue.songs?.map((song, index) => ({ index, song: song.title }));
 }
 
 export default SongQueue;

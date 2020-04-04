@@ -1,10 +1,9 @@
-import youtube from '../../youtube';
 import sendMessage from 'common/sendMessage';
-import SongQueue from './SongQueue';
 
-export class YoutubeHandler {
-  constructor() {
-    this.songQueue = new SongQueue(youtube);
+export class MusicHandler {
+  constructor(songQueue, messageFormatter) {
+    this.songQueue = songQueue;
+    this.messageFormatter = messageFormatter;
   }
 
   getVoiceChannel = (message) => {
@@ -38,12 +37,19 @@ export class YoutubeHandler {
 
     const voiceChannel = this.getVoiceChannel(message);
     this.checkPermissions(voiceChannel, message);
-    await this.songQueue.pushSong(args[1], message);
+    await this.songQueue.pushSong(args.slice(1), message);
   };
 
   clearQueue = (message) => {
     this.songQueue.clearQueue(message);
   };
+
+  showQueue = (message) => {
+    sendMessage(
+      message,
+      this.messageFormatter.formatQueue(this.songQueue.getQueue()),
+    );
+  };
 }
 
-export default YoutubeHandler;
+export default MusicHandler;

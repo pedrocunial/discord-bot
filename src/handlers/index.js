@@ -9,14 +9,13 @@ import {
   skip,
   stop,
   clear,
+  queue,
+  fila,
 } from '../constants';
 import handlePython from './handlePython';
 import handleComissao from './handleComissao';
-import YoutubeHandler from './handleYoutube';
 
-const youtubeHandler = new YoutubeHandler();
-
-export const handle = async (msg, payload) => {
+export const makeHandler = (musicHandler) => async (msg, payload) => {
   console.log(msg);
   switch (msg.split(' ')[0]) {
     case python:
@@ -28,13 +27,16 @@ export const handle = async (msg, payload) => {
     case play:
     case tocar:
     case youtube:
-      return await youtubeHandler.addSong(payload);
+      return await musicHandler.addSong(payload);
     case skip:
-      return youtubeHandler.skipSong(payload);
+      return musicHandler.skipSong(payload);
     case stop:
     case clear:
-      return youtubeHandler.clearQueue(payload);
+      return musicHandler.clearQueue(payload);
+    case queue:
+    case fila:
+      return musicHandler.showQueue(payload);
   }
 };
 
-export default handle;
+export default makeHandler;

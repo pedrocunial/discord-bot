@@ -2,10 +2,15 @@ import Discord from 'discord.js';
 import fs from 'fs';
 
 import { prefix } from './constants';
-import handleMessage from './handlers';
+import makeHandler from './handlers';
+import YoutubeService from 'youtube';
+import MusicHandler from 'handlers/MusicHandler';
+import SongQueue from 'handlers/MusicHandler/SongQueue';
+import messageFormatter from 'message';
 
 const init = () => {
   const client = new Discord.Client();
+  let handler;
 
   client.once('ready', () => {
     console.log('Logged');
@@ -16,7 +21,7 @@ const init = () => {
 
     if (author.bot || !content.startsWith(prefix)) return;
 
-    handleMessage(content.slice(1), msg);
+    handler?.(content.slice(1), msg);
   });
 
   fs.readFile('secrets/secrets.json', 'utf8', (err, data) => {
@@ -24,7 +29,15 @@ const init = () => {
 
     const credentials = JSON.parse(data);
     console.log(credentials);
+
     client.login(credentials.token);
+
+    handler = makeHandler(
+      new MusicHandler(
+        new SongQueue(new YoutubeService(credentials.googleApiKey)),
+      ),
+      messageFormatter,
+    );
   });
 };
 

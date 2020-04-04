@@ -16,3 +16,6 @@ export const skip = 'skip';
 
 export const stop = 'stop';
 export const clear = 'clear';
+
+export const queue = 'queue';
+export const fila = 'fila';
