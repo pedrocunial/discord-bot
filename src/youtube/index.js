@@ -9,7 +9,7 @@ export class YoutubeService {
       maxResults: 1,
       key: apiKey,
       type: 'video',
-      part: 'snippet',
+      part: 'id',
     };
   }
 
@@ -18,7 +18,6 @@ export class YoutubeService {
     console.log('searchQuery', searchQuery);
     const options = {
       ...this.baseConfig,
-      q: keywords.join(' '),
     };
 
     youtubeSearch(searchQuery, options, async (err, data) => {
