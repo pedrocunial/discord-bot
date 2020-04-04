@@ -9,7 +9,6 @@ export class SongQueue {
       connection: null,
       songs: [],
       volume: 5,
-      playing: false,
     };
     this._currentSong = 0;
   }
@@ -21,14 +20,18 @@ export class SongQueue {
   set currentSong(index) {
     const { songs } = this.songQueue;
     const queueSize = songs.length;
-    const newValue = index % queueSize;
+    const newValue = queueSize ? index % queueSize : 0;
 
     this._currentSong = newValue;
   }
 
+  hasSongs = () => !!this.songQueue.song;
+
   nextSong = (message) => {
-    this.currentSong = this.currentSong + 1;
-    this.playSong(this.currentSong, message);
+    if (this.hasSongs()) {
+      this.currentSong = this.currentSong + 1;
+      this.playSong(this.currentSong, message);
+    }
   };
 
   playSong = (index, message) => {
@@ -46,7 +49,8 @@ export class SongQueue {
       console.error('no connection');
     }
 
-    const song = songs[this.currentSong];
+    const song = songs[index];
+    console.log(index, song);
     const dispatcher = connection
       .play(this.musicBackend.playSong(song.url))
       .on('finish', () => this.nextSong(message))
@@ -58,6 +62,10 @@ export class SongQueue {
     return this;
   };
 
+  shouldStartPlaying = (voiceChannel) =>
+    (!this.songQueue.connection || this.songQueue.songs.length === 1) &&
+    voiceChannel;
+
   pushSong = async (song, message) => {
     const prevState = { ...this.songQueue };
     const { songs: prevSongs } = this.songQueue;
@@ -67,15 +75,17 @@ export class SongQueue {
     this.songQueue = {
       ...this.songQueue,
       songs,
-      playing: true,
       textChannel: message.channel,
       voiceChannel,
     };
 
-    if (!this.songQueue.connection && voiceChannel) {
+    console.log(this.songQueue.songs);
+
+    if (this.shouldStartPlaying(voiceChannel)) {
       try {
-        this.songQueue.connection = await voiceChannel.join();
-        this.playSong(this.currentIndex, message);
+        this.songQueue.connection =
+          this.songQueue.connection ?? (await voiceChannel.join());
+        this.playSong(this.currentSong, message);
       } catch (err) {
         console.error('[SongQueue] pushSong.try-catch faile');
         console.error(err);
@@ -85,6 +95,20 @@ export class SongQueue {
 
     sendMessage(message, `adicionei a ${songObj.title} na fila`);
     return this;
+  };
+
+  clearState = () => {
+    this.songQueue.songs = [];
+    this.songQueue.connection?.dispatcher?.end?.();
+    this.currentSong = 0;
+  };
+
+  clearQueue = (message) => {
+    if (!message?.member?.voice?.channel) {
+      sendMessage(message, 'nem to tocando po');
+    }
+
+    this.clearState();
   };
 }
 

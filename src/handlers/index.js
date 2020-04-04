@@ -7,6 +7,8 @@ import {
   tocar,
   youtube,
   skip,
+  stop,
+  clear,
 } from '../constants';
 import handlePython from './handlePython';
 import handleComissao from './handleComissao';
@@ -29,6 +31,9 @@ export const handle = async (msg, payload) => {
       return await youtubeHandler.addSong(payload);
     case skip:
       return youtubeHandler.skipSong(payload);
+    case stop:
+    case clear:
+      return youtubeHandler.clearQueue(payload);
   }
 };
 

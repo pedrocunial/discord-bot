@@ -40,6 +40,10 @@ export class YoutubeHandler {
     this.checkPermissions(voiceChannel, message);
     await this.songQueue.pushSong(args[1], message);
   };
+
+  clearQueue = (message) => {
+    this.songQueue.clearQueue(message);
+  };
 }
 
 export default YoutubeHandler;

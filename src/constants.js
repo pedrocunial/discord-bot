@@ -13,3 +13,6 @@ export const tocar = 'tocar';
 export const youtube = 'youtube';
 
 export const skip = 'skip';
+
+export const stop = 'stop';
+export const clear = 'clear';
