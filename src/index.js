@@ -11,11 +11,12 @@ const init = () => {
     console.log('Logged');
   });
 
-  client.on('message', (msg) => {
-    const { content } = msg;
-    if (content.startsWith(prefix)) {
-      handleMessage(content.slice(1), msg);
-    }
+  client.on('message', async (msg) => {
+    const { content, author } = msg;
+
+    if (author.bot || !content.startsWith(prefix)) return;
+
+    handleMessage(content.slice(1), msg);
   });
 
   fs.readFile('secrets/secrets.json', 'utf8', (err, data) => {

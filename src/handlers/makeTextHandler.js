@@ -1,5 +1,5 @@
 import fs from 'fs';
-import sendMessage from '../common/sendMessage';
+import sendMessage from 'common/sendMessage';
 
 export const makeGetter = (filePath, formatter = (k) => k) => {
   let content;
@@ -7,7 +7,7 @@ export const makeGetter = (filePath, formatter = (k) => k) => {
   return (handler) => {
     if (content) handler(content);
 
-    fs.readFile(filePath, 'utf8', async (err, data) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         throw err;
       }

@@ -1,5 +1,5 @@
-import { randomArray } from '../common/random';
-import sendMessage from '../common/sendMessage';
+import { randomArray } from 'common/random';
+import sendMessage from 'common/sendMessage';
 import { makeGetter, makeTextHandler } from './makeTextHandler';
 
 const sendPythonMeme = (payload, pythonMemes) => {
