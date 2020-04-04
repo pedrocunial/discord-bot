@@ -1,0 +1,9 @@
+{
+  "name": "gilzinbot",
+  "version": "1.0.0",
+  "description": "a discord bot",
+  "main": "index.js",
+  "author": "pedrocunial",
+  "license": "MIT",
+  "private": false
+}
