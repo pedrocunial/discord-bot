@@ -25,5 +25,5 @@
   "scripts": {
     "start": "babel-node src/index.js",
     "watch": "babel-watch src/index.js"
-  },
+  }
 }
