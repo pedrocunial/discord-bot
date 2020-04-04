@@ -11,13 +11,15 @@ import {
   clear,
   queue,
   fila,
+  nightcore,
 } from '../constants';
 import handlePython from './handlePython';
 import handleComissao from './handleComissao';
 
 export const makeHandler = (musicHandler) => async (msg, payload) => {
   console.log(msg);
-  switch (msg.split(' ')[0]) {
+  const content = msg.split(' ');
+  switch (content[0]) {
     case python:
     case pythonzeras:
       return handlePython(payload);
@@ -27,7 +29,7 @@ export const makeHandler = (musicHandler) => async (msg, payload) => {
     case play:
     case tocar:
     case youtube:
-      return await musicHandler.addSong(payload);
+      return await musicHandler.addSong(payload, content.slice(1));
     case skip:
       return musicHandler.skipSong(payload);
     case stop:
@@ -36,6 +38,11 @@ export const makeHandler = (musicHandler) => async (msg, payload) => {
     case queue:
     case fila:
       return musicHandler.showQueue(payload);
+    case nightcore:
+      return await musicHandler.addSong(payload, [
+        'nightcore',
+        ...content.slice(1),
+      ]);
   }
 };
 

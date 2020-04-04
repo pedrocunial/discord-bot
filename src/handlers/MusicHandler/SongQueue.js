@@ -25,10 +25,11 @@ export class SongQueue {
     this._currentSong = newValue;
   }
 
-  hasSongs = () => !!this.songQueue.song;
+  hasSongs = () => !!this.songQueue.songs;
 
   nextSong = (message) => {
     if (this.hasSongs()) {
+      console.log('nextsong has songs');
       this.currentSong = this.currentSong + 1;
       this.playSong(this.currentSong, message);
     }

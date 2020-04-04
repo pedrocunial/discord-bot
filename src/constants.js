@@ -19,3 +19,5 @@ export const clear = 'clear';
 
 export const queue = 'queue';
 export const fila = 'fila';
+
+export const nightcore = 'nightcore';

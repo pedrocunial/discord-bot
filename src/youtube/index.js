@@ -6,7 +6,7 @@ export class YoutubeService {
   constructor(apiKey) {
     this.ready = false;
     this.baseConfig = {
-      maxResults: 10,
+      maxResults: 1,
       key: apiKey,
       type: 'video',
       part: 'snippet',

@@ -35,8 +35,8 @@ const init = () => {
     handler = makeHandler(
       new MusicHandler(
         new SongQueue(new YoutubeService(credentials.googleApiKey)),
+        messageFormatter,
       ),
-      messageFormatter,
     );
   });
 };

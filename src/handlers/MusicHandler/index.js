@@ -26,18 +26,14 @@ export class MusicHandler {
   };
 
   skipSong = (message) => {
+    console.log('skip');
     this.songQueue.nextSong(message);
   };
 
-  addSong = async (message) => {
-    const args = message?.content?.split?.(' ');
-    if (!args || args.length < 2) {
-      console.error('[youtube handler] failed receiving message contents');
-    }
-
+  addSong = async (message, song) => {
     const voiceChannel = this.getVoiceChannel(message);
     this.checkPermissions(voiceChannel, message);
-    await this.songQueue.pushSong(args.slice(1), message);
+    await this.songQueue.pushSong(song, message);
   };
 
   clearQueue = (message) => {
