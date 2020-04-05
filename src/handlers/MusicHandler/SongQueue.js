@@ -25,9 +25,10 @@ export class SongQueue {
 
   hasSongs = () => !!this.songQueue.songs.length;
 
+  isEmpty = () => !this.songQueue.songs.length;
+
   nextSong = (message) => {
     if (this.hasSongs()) {
-      console.log('nextsong has songs');
       this.currentSong = this.currentSong + 1;
       this.playSong(this.currentSong, message);
     }
@@ -60,7 +61,6 @@ export class SongQueue {
     }
 
     const song = songs[index];
-    console.log(index, song);
     const dispatcher = connection
       .play(this.musicBackend.playSong(song.url))
       .on('finish', () => this.nextSong(message))
@@ -90,8 +90,6 @@ export class SongQueue {
       textChannel: message.channel,
       voiceChannel,
     };
-
-    console.log(this.songQueue.songs);
 
     if (this.shouldStartPlaying(voiceChannel)) {
       try {
@@ -145,7 +143,6 @@ export class SongQueue {
   };
 
   removeAt = (message, index) => {
-    console.log('[SongQueue.removeAt] started', index);
     if (index >= this.songQueue?.songs?.length) {
       sendMessage(message, 'indexOutOfBounds exception');
     }
@@ -156,7 +153,6 @@ export class SongQueue {
       ...songs.slice(0, index),
       ...songs.slice(index + 1),
     ];
-    console.log('song queue = ', this.songQueue);
 
     if (this.songQueue.songs.length === 0) {
       this.clearQueue(message);

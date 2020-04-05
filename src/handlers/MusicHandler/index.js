@@ -56,7 +56,7 @@ export class MusicHandler {
       this.getGuildQueueFromMessage(message).nextSong(message);
     } catch (err) {
       console.error('[MusicHandler]#skip');
-      sendError(err);
+      sendError(message, err);
     }
   };
 
@@ -71,9 +71,10 @@ export class MusicHandler {
   clearQueue = (message) => {
     try {
       this.getGuildQueueFromMessage(message).clearQueue(message);
+      this.removeQueueAndLeave(message);
     } catch (error) {
       console.error('[MusicHandler]#clearQueue');
-      sendError(error);
+      sendError(message, error);
     }
   };
 
@@ -87,7 +88,7 @@ export class MusicHandler {
       );
     } catch (err) {
       console.error('[MusicHandler]#showQueue');
-      sendError(err);
+      sendError(message, err);
     }
   };
 
@@ -97,17 +98,22 @@ export class MusicHandler {
       songQueue = this.getGuildQueueFromMessage(message);
     } catch (e) {
       console.error('[MusicHandler]#removeSong');
-      sendError(e);
+      sendError(message, e);
       return;
     }
 
     if (content.length === 1) {
-      return songQueue.removeCurrent(message);
+      songQueue.removeCurrent(message);
+    } else {
+      const index = content[1];
+      songQueue.removeAt(message, index); // rip immutability
     }
 
-    const index = content[1];
-    songQueue.removeAt(message, index); // rip immutability
-    this.showQueue(message);
+    if (songQueue.isEmpty()) {
+      this.removeQueueAndLeave(message);
+    } else {
+      this.showQueue(message);
+    }
   };
 
   jumpToSong = (message, content) => {
@@ -116,7 +122,7 @@ export class MusicHandler {
       songQueue = this.getGuildQueueFromMessage(message);
     } catch (e) {
       console.error('[MusicHandler]#jumpToSong');
-      sendError(e);
+      sendError(message, e);
       return;
     }
 
@@ -126,6 +132,14 @@ export class MusicHandler {
 
     const index = +content[1];
     songQueue.jumpToSong(index, message);
+  };
+
+  removeQueueAndLeave = (message) => {
+    const guildId = this.getGuildId(message);
+    const { [guildId]: deleted, ...rest } = this.guildQueues;
+    this.guildQueues = rest;
+    sendMessage(message, 'até mais amiguinhos');
+    this.getVoiceChannel(message).leave();
   };
 }
 
