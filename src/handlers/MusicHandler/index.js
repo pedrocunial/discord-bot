@@ -54,6 +54,7 @@ export class MusicHandler {
 
     const index = content[1];
     this.songQueue.removeAt(message, index);
+    this.showQueue(message);
   };
 
   jumpToSong = (message, content) => {
