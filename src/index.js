@@ -40,7 +40,7 @@ const init = () => {
     handler?.(content.slice(1), msg);
   });
 
-  if (process.env.DISCORD_TOKEN && process.env.GOOGLE_API_TOKEN) {
+  if (process.env.DISCORD_TOKEN) {
     startServices({
       discordToken: process.env.DISCORD_TOKEN,
       googleToken: process.env.GOOGLE_API_TOKEN,
