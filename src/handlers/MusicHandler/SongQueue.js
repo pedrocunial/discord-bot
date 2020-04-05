@@ -162,7 +162,7 @@ export class SongQueue {
     if (removedSongDiff === 0) {
       this.currentSong = this.currentSong;  // fix last song scenario
       this.playSong(this.currentSong, message);
-    } else if (removedSongDiff < 0) {
+    } else if (removedSongDiff > 0) {
       this.currentSong--;
     }
   };
