@@ -3,6 +3,7 @@ import ytsr from 'ytsr';
 import youtubeSearch from 'youtube-search';
 import { DiscordError } from 'common/error';
 import { getUrlFromResult } from 'common/ytsrUtils';
+import { randomArray } from 'common/random';
 
 export class YoutubeService {
   constructor(apiKey) {
@@ -15,8 +16,8 @@ export class YoutubeService {
   }
 
   /*
-  * @deprecated since implementation of ytsr
-  * */
+   * @deprecated since implementation of ytsr
+   * */
   legacySearch = (searchQuery, options, onVideoFound, onFailure, keywords) => {
     youtubeSearch(searchQuery, this.baseConfig, async (err, data) => {
       if (err) {
@@ -25,7 +26,7 @@ export class YoutubeService {
         console.log(err.response.data.error);
         console.log('====');
         onFailure(
-          err?.response?.data?.error?.message ?? 'acabo a brincadera ;-;',
+          err?.response?.data?.error?.message ?? 'acabo a brincadera ;-;'
         );
         return;
       }
@@ -40,12 +41,12 @@ export class YoutubeService {
     });
   };
 
-  searchVideo = async (keywords) => {
+  searchVideo = async (keywords, limit = 5, selector = (arr) => arr?.[0]) => {
     const searchQuery = keywords.join(' ');
     console.log('searchQuery', searchQuery);
 
-    const videoPayload = await ytsr(searchQuery, { limit: 5 });
-    const videoUrl = getUrlFromResult(videoPayload);
+    const videoPayload = await ytsr(searchQuery, { limit });
+    const videoUrl = getUrlFromResult(videoPayload, selector);
     if (!videoUrl) {
       throw new DiscordError('nun achei nd n mein', 'No video found for url');
     }
@@ -54,12 +55,7 @@ export class YoutubeService {
     return await this.getSong(videoUrl);
   };
 
-  resolveSong = async (
-    songData,
-    onSongFound,
-    onFailure = () => {
-    },
-  ) => {
+  resolveSong = async (songData, random = true) => {
     if (!songData.length) {
       console.error('no songData');
       return;
@@ -71,7 +67,9 @@ export class YoutubeService {
     }
 
     console.log('[YoutubeService]#resolveSong invalidUrl');
-    return await this.searchVideo(songData, onSongFound, onFailure);
+    return await (random
+      ? this.searchVideo(songData, 50, randomArray)
+      : this.searchVideo(songData));
   };
 
   getSong = async (songInfo) => {

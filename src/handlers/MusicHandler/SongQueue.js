@@ -107,9 +107,9 @@ export class SongQueue {
     return this;
   };
 
-  pushSong = async (song, message) => {
+  pushSong = async (song, message, random = false) => {
     try {
-      const result = await this.musicBackend.resolveSong(song);
+      const result = await this.musicBackend.resolveSong(song, random);
       this.resolveSearch(result, message);
     } catch (err) {
       sendMessage(message, err.discordMessage ?? 'nun deu');

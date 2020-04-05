@@ -60,12 +60,12 @@ export class MusicHandler {
     }
   };
 
-  addSong = async (message, song) => {
+  addSong = async (message, song, random = false) => {
     const voiceChannel = this.getVoiceChannel(message);
     this.checkPermissions(voiceChannel, message);
     const guildId = this.getGuildId(message);
 
-    await this.getOrCreateGuildQueue(guildId).pushSong(song, message);
+    await this.getOrCreateGuildQueue(guildId).pushSong(song, message, random);
   };
 
   clearQueue = (message) => {

@@ -31,3 +31,5 @@ export const help = 'help';
 
 export const thomas = 'thomas';
 export const tomas = 'tomas';
+
+export const random = 'random';

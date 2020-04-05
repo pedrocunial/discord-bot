@@ -1,5 +1,2 @@
-export const getUrlFromResult = (result) => result
-  ?.items
-  ?.filter?.((item) => item.type === 'video')
-  ?.[0]
-  ?.link;
+export const getUrlFromResult = (result, selector) =>
+  selector(result?.items?.filter?.((item) => item.type === 'video'))?.link;
