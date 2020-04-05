@@ -30,7 +30,7 @@ following the format:
 
 ```json
 {
-  "token": <discord bot token string>
+  "token": "<discord bot token string>"
 }
 ```
 
