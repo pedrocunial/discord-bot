@@ -105,7 +105,7 @@ export class MusicHandler {
     if (content.length === 1) {
       songQueue.removeCurrent(message);
     } else {
-      const index = content[1];
+      const index = +content[1];
       songQueue.removeAt(message, index); // rip immutability
     }
 
