@@ -2186,7 +2186,7 @@ node-modules-regexp@^1.0.0:
   resolved "https://registry.yarnpkg.com/node-modules-regexp/-/node-modules-regexp-1.0.0.tgz#8d9dbe28964a4ac5712e9131642107c71e90ec40"
   integrity sha1-jZ2+KJZKSsVxLpExZCEHxx6Q7EA=
 
-node-pre-gyp@*, node-pre-gyp@^0.14.0:
+node-pre-gyp@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
   integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
@@ -3033,3 +3033,10 @@ ytdl-core@^2.0.1:
     m3u8stream "^0.6.3"
     miniget "^1.7.0"
     sax "^1.1.3"
+
+ytsr@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/ytsr/-/ytsr-0.1.12.tgz#a103e466bbefd166bec636f1b7cf874ba1cfe345"
+  integrity sha512-j+VUakSps8qTF6JBXUJuP7WXDxTxID7e3W7AdslZvMACm9id69e2XFS4iCkMr8bsa77B11JKsnyvnW6CQShk6g==
+  dependencies:
+    html-entities "^1.1.3"

@@ -42,7 +42,7 @@ export class SongQueue {
     }
     this.currentSong = index;
     this.playSong(index, message);
-  }
+  };
 
   playSong = (index, message) => {
     const { songs, connection } = this.songQueue;
@@ -109,20 +109,12 @@ export class SongQueue {
   };
 
   pushSong = async (song, message) => {
-    console.log(song);
-    await this.musicBackend.resolveSong(
-      song,
-      (result) => {
-        this.resolveSearch(result, message);
-      },
-      (error) => {
-        console.error('[SongQueue] on search failed', error);
-        sendMessage(
-          message,
-          `nao consegui achar uma canção com as palavras ${song.join(' ')}`,
-        );
-      },
-    );
+    try {
+      const result = await this.musicBackend.resolveSong(song);
+      this.resolveSearch(result, message);
+    } catch (err) {
+      sendMessage(message, err.discordMessage ?? 'nun deu');
+    }
   };
 
   clearState = () => {
