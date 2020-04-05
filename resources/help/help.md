@@ -45,7 +45,7 @@ Limpa a playlist atual.
 
 Pula para música de índice `<index>` na fila.
 
-### thomas
+### thomas / tomas
 
 thomas
 

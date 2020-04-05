@@ -29,13 +29,12 @@ const init = () => {
 
   client.on('message', async (msg) => {
     const { content, author } = msg;
+    if (!author.bot && Math.random() * 10 > 9) {
+      handleThomas(msg);
+    }
 
     if (author.bot || !content.startsWith(prefix)) {
-      if (Math.random() * 10 > 9) {
-        handleThomas(msg);
-      } else {
-        return;
-      }
+      return;
     }
 
     handler?.(content.slice(1), msg);
