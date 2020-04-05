@@ -12,7 +12,8 @@ import {
   queue,
   fila,
   nightcore,
-} from '../constants';
+  delete_, remove, goto, jump,
+} from 'constants';
 import handlePython from './handlePython';
 import handleComissao from './handleComissao';
 
@@ -43,6 +44,12 @@ export const makeHandler = (musicHandler) => async (msg, payload) => {
         'nightcore',
         ...content.slice(1),
       ]);
+    case delete_:
+    case remove:
+      return musicHandler.removeSong(payload, content);
+    case goto:
+    case jump:
+      return musicHandler.jumpToSong(payload, content);
   }
 };
 

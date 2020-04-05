@@ -25,7 +25,7 @@ export class SongQueue {
     this._currentSong = newValue;
   }
 
-  hasSongs = () => !!this.songQueue.songs;
+  hasSongs = () => !!this.songQueue.songs.length;
 
   nextSong = (message) => {
     if (this.hasSongs()) {
@@ -34,6 +34,15 @@ export class SongQueue {
       this.playSong(this.currentSong, message);
     }
   };
+
+  jumpToSong = (index, message) => {
+    if (index >= this.songQueue.songs.length) {
+      console.error('trying to access index out of bounds');
+      return sendMessage(message, 'indexOutOfBoundsException');
+    }
+    this.currentSong = index;
+    this.playSong(index, message);
+  }
 
   playSong = (index, message) => {
     const { songs, connection } = this.songQueue;
@@ -44,10 +53,12 @@ export class SongQueue {
         songs.length,
         index,
       );
+      return;
     }
 
     if (!connection) {
       console.error('no connection');
+      return;
     }
 
     const song = songs[index];
@@ -130,7 +141,39 @@ export class SongQueue {
   };
 
   getQueue = () =>
-    this.songQueue.songs?.map((song, index) => ({ index, song: song.title }));
+    this.songQueue.songs?.map((song, index) => ({
+      index,
+      song: song.title,
+      playing: index === this.currentSong,
+    }));
+
+  removeCurrent = (message) => {
+    return this.removeAt(message, this.currentSong);
+  };
+
+  removeAt = (message, index) => {
+    console.log('[SongQueue.removeAt] started', index);
+    if (index >= this.songQueue?.songs?.length) {
+      sendMessage(message, 'indexOutOfBounds exception');
+    }
+
+    const removedSongDiff = this.currentSong - index;
+    const songs = this.songQueue.songs;
+    this.songQueue.songs = [...songs.slice(0, index), ...songs.slice(index + 1)];
+    console.log('song queue = ', this.songQueue);
+
+    if (this.songQueue.songs.length === 0) {
+      this.clearQueue(message);
+      return;
+    }
+
+    if (removedSongDiff === 0) {
+      this.currentSong = this.currentSong;  // fix last song scenario
+      this.playSong(this.currentSong, message);
+    } else if (removedSongDiff < 0) {
+      this.currentSong--;
+    }
+  };
 }
 
 export default SongQueue;

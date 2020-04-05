@@ -2,7 +2,6 @@ export const prefix = '>';
 
 export const python = 'python';
 export const pythonzeras = 'pythonzeras';
-export const pythonCommands = [python, pythonzeras];
 
 export const gabs = 'gabs';
 export const comissao = 'comissao';
@@ -21,3 +20,9 @@ export const queue = 'queue';
 export const fila = 'fila';
 
 export const nightcore = 'nightcore';
+
+export const delete_ = 'delete';
+export const remove = 'remove';
+
+export const jump = 'jump';
+export const goto = 'go-to';

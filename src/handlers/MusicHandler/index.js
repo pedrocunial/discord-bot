@@ -46,6 +46,24 @@ export class MusicHandler {
       this.messageFormatter.formatQueue(this.songQueue.getQueue()),
     );
   };
+
+  removeSong = (message, content) => {
+    if (content.length === 1) {
+      return this.songQueue.removeCurrent(message);
+    }
+
+    const index = content[1];
+    this.songQueue.removeAt(message, index);
+  };
+
+  jumpToSong = (message, content) => {
+    if (content.length === 1) {
+      return sendMessage(message, 'aprende a usar o programa duh');
+    }
+
+    const index = +content[1];
+    this.songQueue.jumpToSong(index, message);
+  }
 }
 
 export default MusicHandler;
