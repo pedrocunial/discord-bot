@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file:$PROJECT_DIR$/../../../../../../..//$PROJECT_DIR$/.idea/gilzinbot.iml" filepath="$PROJECT_DIR$/.idea/gilzinbot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/gilbot.js.iml" filepath="$PROJECT_DIR$/.idea/gilbot.js.iml" />
+      <module fileurl="file://file:C:/../..//C:/Users/Pedro/Documents/projects/gilbot.js/.idea/gilzinbot.iml" filepath="file:C:/../..//C:/Users/Pedro/Documents/projects/gilbot.js/.idea/gilzinbot.iml" />
     </modules>
   </component>
 </project>
