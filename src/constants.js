@@ -26,3 +26,8 @@ export const remove = 'remove';
 
 export const jump = 'jump';
 export const goto = 'go-to';
+
+export const help = 'help';
+
+export const thomas = 'thomas';
+export const tomas = 'tomas';

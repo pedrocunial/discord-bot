@@ -7,6 +7,7 @@ import YoutubeService from 'youtube';
 import MusicHandler from 'handlers/MusicHandler';
 import SongQueue from 'handlers/MusicHandler/SongQueue';
 import messageFormatter from 'message';
+import handleThomas from 'handlers/handleThomas';
 
 const init = () => {
   const client = new Discord.Client();
@@ -17,8 +18,8 @@ const init = () => {
     handler = makeHandler(
       new MusicHandler(
         new SongQueue(new YoutubeService(googleToken)),
-        messageFormatter,
-      ),
+        messageFormatter
+      )
     );
   };
 
@@ -29,7 +30,13 @@ const init = () => {
   client.on('message', async (msg) => {
     const { content, author } = msg;
 
-    if (author.bot || !content.startsWith(prefix)) return;
+    if (author.bot || !content.startsWith(prefix)) {
+      if (Math.random() * 10 > 9) {
+        handleThomas(msg);
+      } else {
+        return;
+      }
+    }
 
     handler?.(content.slice(1), msg);
   });
@@ -44,7 +51,7 @@ const init = () => {
       if (err) throw err;
 
       const { token: discordToken, googleApiKey: googleToken } = JSON.parse(
-        data,
+        data
       );
       console.log({ discordToken, googleToken });
       startServices({ discordToken, googleToken });

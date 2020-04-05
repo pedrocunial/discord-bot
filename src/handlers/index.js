@@ -12,10 +12,18 @@ import {
   queue,
   fila,
   nightcore,
-  delete_, remove, goto, jump,
+  delete_,
+  remove,
+  goto,
+  jump,
+  help,
+  tomas,
+  thomas,
 } from 'constants';
 import handlePython from './handlePython';
 import handleComissao from './handleComissao';
+import handleHelp from 'handlers/handleHelp';
+import handleThomas from 'handlers/handleThomas';
 
 export const makeHandler = (musicHandler) => async (msg, payload) => {
   console.log(msg);
@@ -50,6 +58,12 @@ export const makeHandler = (musicHandler) => async (msg, payload) => {
     case goto:
     case jump:
       return musicHandler.jumpToSong(payload, content);
+    case thomas:
+    case tomas:
+      return handleThomas(payload);
+    case help:
+    default:
+      return handleHelp(payload);
   }
 };
 
