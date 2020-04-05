@@ -20,9 +20,7 @@ export class SongQueue {
   set currentSong(index) {
     const { songs } = this.songQueue;
     const queueSize = songs.length;
-    const newValue = queueSize ? index % queueSize : 0;
-
-    this._currentSong = newValue;
+    this._currentSong = queueSize ? index % queueSize : 0;
   }
 
   hasSongs = () => !!this.songQueue.songs.length;
@@ -51,7 +49,7 @@ export class SongQueue {
       console.error(
         'tried acessing song of humoungous index',
         songs.length,
-        index,
+        index
       );
       return;
     }
@@ -66,7 +64,10 @@ export class SongQueue {
     const dispatcher = connection
       .play(this.musicBackend.playSong(song.url))
       .on('finish', () => this.nextSong(message))
-      .on('error', (error) => console.error('playsong error', error));
+      .on('error', (error) => {
+        console.error('playsong error', error);
+        this.removeCurrent(message);
+      });
 
     dispatcher.setVolumeLogarithmic(this.songQueue.volume / 5);
     sendMessage(message, `tocando: **${song.title}** `);
@@ -151,7 +152,10 @@ export class SongQueue {
 
     const removedSongDiff = this.currentSong - index;
     const songs = this.songQueue.songs;
-    this.songQueue.songs = [...songs.slice(0, index), ...songs.slice(index + 1)];
+    this.songQueue.songs = [
+      ...songs.slice(0, index),
+      ...songs.slice(index + 1),
+    ];
     console.log('song queue = ', this.songQueue);
 
     if (this.songQueue.songs.length === 0) {
@@ -160,7 +164,7 @@ export class SongQueue {
     }
 
     if (removedSongDiff === 0) {
-      this.currentSong = this.currentSong;  // fix last song scenario
+      this.currentSong = this.currentSong; // fix last song scenario
       this.playSong(this.currentSong, message);
     } else if (removedSongDiff > 0) {
       this.currentSong--;

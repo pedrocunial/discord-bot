@@ -17,7 +17,7 @@ const init = () => {
     client.login(discordToken);
     handler = makeHandler(
       new MusicHandler(
-        new SongQueue(new YoutubeService(googleToken)),
+        () => new SongQueue(new YoutubeService(googleToken)),
         messageFormatter
       )
     );
