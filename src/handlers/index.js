@@ -18,7 +18,8 @@ import {
   jump,
   help,
   tomas,
-  thomas, random
+  thomas,
+  random,
 } from 'constants';
 import handlePython from './handlePython';
 import handleComissao from './handleComissao';
@@ -58,14 +59,14 @@ export const makeHandler = (musicHandler) => async (msg, payload) => {
     case goto:
     case jump:
       return musicHandler.jumpToSong(payload, content);
-    case thomas:
-    case tomas:
-      return handleThomas(payload);
     case random:
       return musicHandler.addSong(payload, content.slice(1), true);
     case help:
-    default:
       return handleHelp(payload);
+    case thomas:
+    case tomas:
+    default:
+      return handleThomas(payload);
   }
 };
 

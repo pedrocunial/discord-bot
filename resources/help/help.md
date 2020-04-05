@@ -25,6 +25,12 @@ Exemplo: `>play supla nightcore`
 
 Alias para `>play nightcore <pavras chave>`.
 
+### random
+
+Toca uma música aleatória para um dado tópico.
+
+Exemplo: `>random seu jorge` toca uma música aleatória do seu jorge.
+
 ### delete / remove <index>
 
 Remove música de índice `<index>` na fila.
