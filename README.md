@@ -46,7 +46,7 @@ variables in your heroku application dashboard as well as the `ffmpeg`
 dependency in your heroku buildpacks (the URL for the `ffmpeg` buildpack
 can be found in the `./buildpacks` file).
 
-## Styiling
+## Styling
 
 The code uses the default airbnb eslint configuration with small tunings
 (80 characters max line length because I like to use split screens). The
